@@ -77,23 +77,23 @@ function parseData(data) {
 // create an event listener that checks if user submitted inforamtion of confirmed breakdown (could change after they edit)
 
 function splitTheBill() {
-    // call processConfirmedReceipt
     let confirmedReceipt = processConfirmedReceipt();
 
-    // call pairNameWithItems with the items in return value of processConfirmedReceipt
-        // call calculateItemAmountOwed inside of this function
     let peopleWithItems = pairPeopleWithItems(confirmedReceipt, people);
 
-    // using the list of json objects created by the pairNameWithItems function: 
-        // loop through each json object, and call calculateTotalAmountOwed
-            // use this returned value to add a new variable (total_amount_owed) to the json object; this attaches the NAME of someone in their party with the TOTAL AMOUNT they owe
+    let peopleWithAmountOwed = [];
+    let peopleWithItemsEntries = Object.entries(peopleWithItems);
 
+    peopleWithItemsEntries.forEach(([person, items]) => {
+        peopleWithAmountOwed.push({
+            person: person,
+            amountOwed: calculateTotalAmountOwed(items)
+        })
+    });
 
-
-    // RETURNS OBJECT WITH vendorName AND peopleWithAmountOwed
     let messageData = {
-        vendorName: "",
-        peopleWithAmountOwed: []
+        vendorName: confirmedReceipt[vendorName],
+        peopleWithAmountOwed: peopleWithAmountOwed
     }
     return messageData;
 }
@@ -122,15 +122,19 @@ function processConfirmedReceipt() {
     return confirmedReceiptData;
 }
 
+function gatherValuesOfConfirmedReceipt() {
+    
+}
+
 function pairPeopleWithItems(receipt, people) {
     const items = receipt[items];
-    
+
     let peopleWithItems = {};
-    
+
     people.forEach(person => {
         let newPerson = person;
         let newItems = [];
-    
+
         peopleWithItems[newPerson] = newItems;
     });
 
