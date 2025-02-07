@@ -1,14 +1,14 @@
-// packages
+// PACKAGES //
 const client = require('@veryfi/veryfi-sdk');
 require('dotenv').config();
 
-// secrets
+// SECRETS //
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const USERNAME = process.env.USERNAME;
 const API_KEY = process.env.API_KEY;
 
-// OCR
+// OCR //
 let veryfiClient = new client(CLIENT_ID, CLIENT_SECRET, USERNAME, API_KEY);
 
 // create an event listener for this later
@@ -21,7 +21,8 @@ let veryfiClient = new client(CLIENT_ID, CLIENT_SECRET, USERNAME, API_KEY);
 //     outputElem.textContent = text;
 // });
 
-// HANDLER
+// SCANNED RECEIPT PROCESSING //
+
 async function processReceiptHandler(image) {
     try {
         let receiptData = await processReceipt(image);
@@ -34,7 +35,6 @@ async function processReceiptHandler(image) {
     }
 }
 
-// RECEIPT PROCESSING
 function processReceipt(image) {
     return veryfiClient.process_document(image)
         .then((response) => {
@@ -72,28 +72,28 @@ function parseData(data) {
     return receiptData;
 }
 
-// CALCULATIONS
+// CALCULATIONS //
 
 // create an event listener that checks if user submitted inforamtion of confirmed breakdown (could change after they edit)
 
 function splitTheBill() {
-    // call processConfirmedReceipt
     let confirmedReceipt = processConfirmedReceipt();
 
-    // call pairNameWithItems with the items in return value of processConfirmedReceipt
-        // call calculateItemAmountOwed inside of this function
     let peopleWithItems = pairPeopleWithItems(confirmedReceipt, people);
 
-    // using the list of json objects created by the pairNameWithItems function: 
-        // loop through each json object, and call calculateTotalAmountOwed
-            // use this returned value to add a new variable (total_amount_owed) to the json object; this attaches the NAME of someone in their party with the TOTAL AMOUNT they owe
+    let peopleWithAmountOwed = [];
+    let peopleWithItemsEntries = Object.entries(peopleWithItems);
 
+    peopleWithItemsEntries.forEach(([person, items]) => {
+        peopleWithAmountOwed.push({
+            person: person,
+            amountOwed: calculateTotalAmountOwed(items)
+        })
+    });
 
-
-    // RETURNS OBJECT WITH vendorName AND peopleWithAmountOwed
     let messageData = {
-        vendorName: "",
-        peopleWithAmountOwed: []
+        vendorName: confirmedReceipt[vendorName],
+        peopleWithAmountOwed: peopleWithAmountOwed
     }
     return messageData;
 }
@@ -122,15 +122,19 @@ function processConfirmedReceipt() {
     return confirmedReceiptData;
 }
 
+function gatherValuesOfConfirmedReceipt() {
+
+}
+
 function pairPeopleWithItems(receipt, people) {
     const items = receipt[items];
-    
+
     let peopleWithItems = {};
-    
+
     people.forEach(person => {
         let newPerson = person;
         let newItems = [];
-    
+
         peopleWithItems[newPerson] = newItems;
     });
 
@@ -169,13 +173,14 @@ function roundUpToNearestCent(num) {
     return Math.ceil(num * 100) / 100;
 }
 
-// GENERATE TEXT MESSAGE
+// GENERATE TEXT MESSAGE //
 
 function generateTextMessage(names_and_total_amount_owed) {
 
 }
 
-// TESTING
+// TESTING //
+
 // (async () => {
 // 	console.log(await processReceiptHandler("test-receipt-1.jpeg"))
 //     console.log(await processReceiptHandler("test-receipt-2.jpg"))
