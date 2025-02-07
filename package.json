@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@veryfi/veryfi-sdk": "^1.4.2"
+    "@veryfi/veryfi-sdk": "^1.4.2",
+    "dotenv": "^16.4.7"
   }
 }
