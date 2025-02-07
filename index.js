@@ -21,6 +21,7 @@ let veryfi_client = new Client(client_id, client_secret, username, api_key);
 //     outputElem.textContent = text;
 // });
 
+// HANDLER
 async function handler(image) {
     try {
         let receipt_data = await processReceipt(image);
@@ -33,6 +34,7 @@ async function handler(image) {
     }
 }
 
+// RECEIPT PROCESSING
 function processReceipt(image) {
     return veryfi_client.process_document(image)
         .then((response) => {
@@ -63,9 +65,7 @@ function parseData(data) {
         finalData.items.push({
             description: item.description,
             total: item.total,
-            quantity: item.quantity,
-            price: item.total,
-            ordered_by: []
+            quantity: item.quantity
         })
     })
 
@@ -73,14 +73,60 @@ function parseData(data) {
 }
 
 // CALCULATIONS
+
 // create an event listener that checks if user submitted inforamtion of confirmed breakdown (could change after they edit)
 
-// load the html elements that hold values into a new json data
-    // 
+function splitTheBill() {
+    // call processConfirmedReceipt
 
-// create new json data that attaches the NAME of someone in their party with each (ITEM+AMOUNT+RATIO) they owe
+    // call pairNameWithItems with the items in return value of processConfirmedReceipt
+        // call calculateItemAmountOwed inside of this function
+
+    // using the list of json objects created by the pairNameWithItems function: 
+        // loop through each json object, and call calculateTotalAmountOwed
+            // use this returned value to add a new variable (total_amount_owed) to the json object; this attaches the NAME of someone in their party with the TOTAL AMOUNT they owe
+}
+
+// load the html elements that hold values into a new json object
+function processConfirmedReceipt() {
+    // keep same schema as what's seen in parseData
+        // include an ordered_by list AND num_people_sharing_item integer for each item
+
+    // RETURNS A JSON OBJECT
+}
+
+// create a list of json objects that attaches the NAME of someone in their party with the ITEMS they ordered
+function pairNameWithItems(items) {
+    // loop through each item
+        // for each name found in the order_by list, call calculateItemAmountOwed, then push that item_description and item_amount_owed onto the person's ITEM list
+            // make note that this new item variable just has the item_description and item_amount_owed bc that's all we need now
+            // {item_description: ____, item_amount_owed: ____}
+
+    // RETURNS A LIST OF JSON OBJECTS
+}
+
+function calculateItemAmountOwed(item_total, subtotal, tip, tax, num_people_sharing_item) {
+    // let shared_item_ratio = 1 / num_people_sharing_item;
+
+    // RETURNS A FLOAT
+}
+
+function calculateTotalAmountOwed(name_and_items) {
+    // take sum of item_amount_owed
+
+    // RETURNS A FLOAT
+}
+
+// GENERATE TEXT MESSAGE
+
+function generateTextMessage(names_and_total_amount_owed) {
+    
+}
 
 // TESTING
-(async () => {
-	console.log(await handler("test-receipt.jpeg"))
-})()
+// (async () => {
+// 	console.log(await handler("test-receipt-1.jpeg"))
+//     console.log(await handler("test-receipt-2.jpg"))
+//     console.log(await handler("test-receipt-3.jpeg"))
+//     console.log(await handler("test-receipt-4.jpg"))
+// })()
