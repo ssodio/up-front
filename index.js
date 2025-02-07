@@ -123,7 +123,7 @@ function processConfirmedReceipt() {
 }
 
 function gatherValuesOfConfirmedReceipt() {
-
+    
 }
 
 function pairPeopleWithItems(receipt, people) {
