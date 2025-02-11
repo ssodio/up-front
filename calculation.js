@@ -27,12 +27,12 @@ function splitTheBill() {
 // load the html elements that hold values into a new object
 function processConfirmedReceipt() {
     let confirmedReceiptData = {
-        items: [],
-        tip: "",
+        vendorName: "",
         tax: "",
+        tip: "",
         subtotal: "",
         total: "",
-        vendorName: "",
+        items: []
     }
 
     FILL.forEach((item) => {
@@ -53,23 +53,24 @@ function gatherValuesOfConfirmedReceipt() {
 }
 
 function pairPeopleWithItems(receipt, people) {
-    const items = receipt[items];
+    const allItems = receipt.items;
 
     let peopleWithItems = {};
 
-    people.forEach(person => {
+    people.forEach((person) => {
         let newPerson = person;
         let newItems = [];
 
         peopleWithItems[newPerson] = newItems;
     });
 
-    items.forEach(item => {
-        let calculatedItemAmountOwed = calculateItemAmountOwed(receipt[total], receipt[subtotal], receipt[tip], receipt[tax], receipt[numPeopleSharingItem]);
+    allItems.forEach((item) => {
+        let calculatedItemAmountOwed = calculateItemAmountOwed(item.total, receipt.subtotal, receipt.tip, receipt.tax, item.numPeopleSharingItem);
+        let description = item.description;
 
         item.orderedBy.forEach(person => {
             peopleWithItems[person].push({
-                description: item[description],
+                description: description,
                 amountOwed: calculatedItemAmountOwed
             })
         });
@@ -89,14 +90,16 @@ function calculateTotalAmountOwed(items) {
     let totalAmountOwed = 0;
 
     for (let i = 0; i < items.length; i++) {
-        totalAmountOwed += items[i][amountOwed];
+        totalAmountOwed += items[i].amountOwed;
     }
 
     return roundUpToNearestCent(totalAmountOwed);
 }
 
 function roundUpToNearestCent(num) {
-    return Math.ceil(num * 100) / 100;
+    let rounded = Math.ceil(num * 100) / 100;
+    let clipped = parseFloat(rounded.toFixed(2));
+    return clipped;
 }
 
-module.exports = { pairPeopleWithItems, calculateItemAmountOwed, calculateTotalAmountOwed };
+module.exports = { pairPeopleWithItems, calculateItemAmountOwed, calculateTotalAmountOwed, roundUpToNearestCent };

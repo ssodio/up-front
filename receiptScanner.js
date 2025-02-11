@@ -42,12 +42,12 @@ function processReceipt(image) {
 
 function parseData(data) {
     let receiptData = {
-        items: [],
-        tip: data.tip,
+        vendorName: data.vendor.raw_name,
         tax: data.tax,
+        tip: data.tip,
         subtotal: data.subtotal,
         total: data.total,
-        vendorName: data.vendor.raw_name,
+        items: []
     }
 
     data.line_items.forEach((item) => {
