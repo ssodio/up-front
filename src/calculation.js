@@ -102,4 +102,4 @@ function roundUpToNearestCent(num) {
     return clipped;
 }
 
-module.exports = { pairPeopleWithItems, calculateItemAmountOwed, calculateTotalAmountOwed, roundUpToNearestCent };
+module.exports = { pairPeopleWithItems, calculateItemAmountOwed, calculateTotalAmountOwed };

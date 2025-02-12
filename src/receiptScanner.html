@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Scanner</title>
+    <script src="./index.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <img src="./img/back.png">
+    
+    <form>
+        <input type="file" id="cameraInput" accept="image/*" capture="camera">
+        <img id="imagePreview" src="">
+    </form>
+
+    <!-- <script>
+        // Get the file input and image preview elements
+        const cameraInput = document.getElementById('cameraInput');
+        const imagePreview = document.getElementById('imagePreview');
+
+        // Event listener to show the image preview once a picture is taken
+        cameraInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                
+                // Once the image is loaded, set the image preview
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';  // Show the image preview
+                };
+
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            }
+        });
+    </script> -->
+</body>
+</html>
