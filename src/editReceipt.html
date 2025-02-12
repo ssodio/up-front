@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,41 +8,41 @@
     <script src="./index.js"></script>
     <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    <img src="./img/back.png">
-    <div>
-        <h2>Item</h2>
-        <h2>$</h2>
-        <h2>Ordered by</h2>
+    <div class="container">
+        <div>
+            <img src="./img/back.png" onclick="redirectToInputSelect()">
+            <button id="testscanrecpeipt" onclick="scanReceipt()">test</button>
+            <h1 id="vendorName"></h1>
+            <div>
+                <h2>Item</h2>
+                <h2>$</h2>
+                <h2>Ordered by</h2>
+            </div>
+            <div>
+                <div id="receiptItems"></div>
+                <h3>Add item</h3>
+            </div>
+            <div>
+                <h2>Subtotal</h2>
+                <p id="subtotal"></p>
+            </div>
+            <div>
+                <h2>Tax</h2>
+                <p id="tax" class="taxTipAmounts" oninput="updateSubtotalAndTotal()"></p>
+            </div>
+            <div>
+                <h2>Tip</h2>
+                <p id="tip" class="taxTipAmounts" oninput="updateSubtotalAndTotal()"></p>
+            </div>
+            <div>
+                <h2>Check Total</h2>
+                <p id="checkTotal"></p>
+            </div>
+            <button id="calculate-button">$PLIT THE BILL</button>
+        </div>
     </div>
-    <div>
-        <input type="text" id="item-input" placeholder="Enter item">
-        <input type="text" id="price-input" placeholder="0.00">
-        <select id="ordered-by-select" multiple size="1">
-            <option value="apple">Apple</option>
-            <option value="banana">Banana</option>
-            <option value="orange">Orange</option>
-            <option value="grapes">Grapes</option>
-            <option value="mango">Mango</option>
-        </select>
-    </div>
-    <h3>Add item</h3>
-    <div>
-        <h2>Subtotal</h2>
-        <p>$ 0.00</p>
-    </div>
-    <div>
-        <h2>Tax</h2>
-        <p>$ 0.00</p>
-    </div>
-    <div>
-        <h2>Tip</h2>
-        <p>$ 0.00</p>
-    </div>
-    <div>
-        <h2>Check Total</h2>
-        <p>$ 0.00</p>
-    </div>
-    <button id="calculate-button">$PLIT THE BILL</button>
 </body>
+
 </html>

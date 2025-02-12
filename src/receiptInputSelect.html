@@ -5,20 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Select</title>
-    <script src="./index.js"></script>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="container">
         <div>
-            <img src="./img/back.png">
+            <img src="./img/back.png" onclick="redirectToAddPeople()">
             <div>
-                <button>SCAN</button>
-                <button>INPUT</button>
+                <button id="redirectToReceiptScannerButton" onclick="redirectToReceiptScanner()">SCAN</button>
+                <button id="redirectToEditReceiptButton" onclick="redirectToEditReceipt()">INPUT</button>
             </div>
         </div>
     </div>
+    <script src="index.js"></script>
 </body>
 
 </html>
