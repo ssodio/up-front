@@ -107,26 +107,62 @@ function savePeople() {
 
 // INPUT RECEIPT //
 
-function inputReceipt() {
-    showEditReceiptBlock();
+function editItems() {
+    const addItemEntryContainer = document.getElementById('addItemEntry');
+    const editItemsButton = document.getElementById('editItemsButton');
+    const doneEditItemsButton = document.getElementById('doneEditItemsButton');
+
+    //also show the minus signs
+    addItemEntryContainer.classList.add('show');
+    editItemsButton.classList.remove('show');
+    doneEditItemsButton.classList.add('show');
 }
 
-function addItem() {
+function doneEditItems() {
+    const addItemEntryContainer = document.getElementById('addItemEntry');
+    const editItemsButton = document.getElementById('editItemsButton');
+    const doneEditItemsButton = document.getElementById('doneEditItemsButton');
+
+    //also remove minus signs
+    addItemEntryContainer.classList.remove('show');
+    editItemsButton.classList.add('show');
+    doneEditItemsButton.classList.remove('show');
+}
+
+function addItemEntry() {
+    const addItemDescriptionInput = document.getElementById('addItemDescriptionInput');
+    const addItemTotalInput = document.getElementById('addItemTotalInput');
+    const addItemIndex = createNewItemIndex();
+
+    addItem(addItemIndex, addItemDescriptionInput.innerText, addItemTotalInput.innerText);
+
+    addItemDescriptionInput.innerText = "Enter item here...";
+    addItemTotalInput.innerText = "0.00";
+}
+
+function addItem(index, itemDescription, itemTotal) {
     const savedPeopleList = localStorage.getItem('peopleList');
     const people = JSON.parse(savedPeopleList);
-    
+
     const newItemEntry = document.createElement('div');
+    newItemEntry.id = index;
 
     const newItemDescription = document.createElement('p');
     newItemDescription.classList.add('itemDescriptions');
-    newItemDescription.textContent = "Enter item here...";
+    newItemDescription.textContent = itemDescription;
     newItemDescription.setAttribute('contenteditable', 'true');
 
     const newItemTotal = document.createElement('p');
+    newItemTotal.id = "itemTotal-" + index;
     newItemTotal.classList.add('itemAmounts');
-    newItemTotal.textContent = 0.00;
+    newItemTotal.textContent = itemTotal;
     newItemTotal.setAttribute('contenteditable', 'true');
-    newItemTotal.oninput = updateSubtotalAndTotal;
+    newItemTotal.onblur = function () {
+        changeAmount("itemTotal-" + index);
+    }
+    newItemTotal.onfocus = function () {
+        savePreviousAmount("itemTotal-" + index);
+    }
 
     const newOrderedByDropdown = document.createElement('select');
     newOrderedByDropdown.classList.add('itemOrderedBys');
@@ -138,13 +174,40 @@ function addItem() {
         newOrderedByDropdown.appendChild(option);
     })
 
+    const newRemoveItemButton = document.createElement('img');
+    newRemoveItemButton.src = './img/minus.png';
+    newRemoveItemButton.id = 'itemRemoveButton-' + index;
+    newRemoveItemButton.onclick = function () {
+        removeItem(index);
+    }
+
     newItemEntry.appendChild(newItemDescription);
     newItemEntry.appendChild(newItemTotal);
     newItemEntry.appendChild(newOrderedByDropdown);
+    newItemEntry.appendChild(newRemoveItemButton);
 
     document.getElementById('receiptItems').appendChild(newItemEntry);
+
+    updateSubtotalAndTotal();
 }
 
+function removeItem(itemId) {
+    const itemToRemove = document.getElementById(itemId);
+    document.getElementById('receiptItems').removeChild(itemToRemove);
+
+    updateSubtotalAndTotal();
+}
+
+function createNewItemIndex() {
+    const itemEntryContainer = document.getElementById('receiptItems');
+
+    // Get the immediate children of the parent
+    const itemEntries = Array.from(itemEntryContainer.children)
+        .filter(child => child.id) // Filter out elements without an id
+        .map(child => child.id); // Get the id of each child
+
+    return Math.max(itemEntries) + 1;
+}
 
 // SCANNED RECEIPT PROCESSING //
 
@@ -162,9 +225,6 @@ function uploadReceipt() {
 }
 
 function scanReceipt(receiptFile) {
-    const savedPeopleList = localStorage.getItem('peopleList');
-    const people = JSON.parse(savedPeopleList);
-
     // call processReceipt
     // const receipt = processReceipt(receiptFile);
 
@@ -194,42 +254,29 @@ function scanReceipt(receiptFile) {
     };
 
     const items = receipt.items;
-    items.forEach(item => {
-        const newItemEntry = document.createElement('div');
-
-        const newItemDescription = document.createElement('p');
-        newItemDescription.classList.add('itemDescriptions');
-        newItemDescription.textContent = item.description;
-        newItemDescription.setAttribute('contenteditable', 'true');
-
-        const newItemTotal = document.createElement('p');
-        newItemTotal.classList.add('itemAmounts');
-        newItemTotal.textContent = item.total;
-        newItemTotal.setAttribute('contenteditable', 'true');
-        newItemTotal.oninput = updateSubtotalAndTotal;
-
-        const newOrderedByDropdown = document.createElement('select');
-        newOrderedByDropdown.classList.add('itemOrderedBys');
-        newOrderedByDropdown.multiple = true;
-        people.forEach(person => {
-            const option = document.createElement('option');
-            option.value = person.toLowerCase().replace(" ", "_");
-            option.textContent = person;
-            newOrderedByDropdown.appendChild(option);
-        })
-
-        newItemEntry.appendChild(newItemDescription);
-        newItemEntry.appendChild(newItemTotal);
-        newItemEntry.appendChild(newOrderedByDropdown);
-
-        document.getElementById('receiptItems').appendChild(newItemEntry);
-    });
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
+        addItem(i, item.description, item.total);
+    }
 
     document.getElementById('vendorName').innerText = receipt.vendorName;
     document.getElementById('subtotal').innerText = receipt.subtotal;
     document.getElementById('tax').innerText = receipt.tax;
     document.getElementById('tip').innerText = receipt.tip;
     document.getElementById('checkTotal').innerText = receipt.total;
+}
+
+function changeAmount(amountId) {
+    const amountElement = document.getElementById(amountId);
+    const amount = (amountElement.innerText).trim();
+
+    // Check if input is valid amount
+    if (isValidAmount(amount)) {
+        updateSubtotalAndTotal();
+        document.getElementById(amountId).innerText = amount;
+    } else {
+        amountElement.innerText = localStorage.getItem('previousAmount');
+    }
 }
 
 function updateSubtotalAndTotal() {
@@ -263,6 +310,16 @@ function updateSubtotalAndTotal() {
     document.getElementById('checkTotal').innerText = checkTotalValue;
 }
 
+function savePreviousAmount(amountId) {
+    let previousAmount = document.getElementById(amountId).innerText;
+
+    localStorage.setItem('previousAmount', previousAmount);
+}
+
+function isValidAmount(amount) {
+    const pattern = /^\d+(\.\d+)?$/; // Matches positive integers and positive floats
+    return pattern.test(amount);
+}
 
 // CONFIRMED RECEIPT PROCESSING //
 

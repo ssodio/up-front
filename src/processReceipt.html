@@ -16,7 +16,7 @@
                 <div>
                     <input type="file" id="receiptUpload" accept="image/*" onchange="uploadReceipt()">
                     <button onclick="clickUpload()">SCAN</button>
-                    <button onclick="inputReceipt()">INPUT</button>
+                    <button onclick="showEditReceiptBlock()">INPUT</button>
                 </div>
             </div>
         </div>
@@ -30,8 +30,18 @@
                     <h2>Ordered by</h2>
                 </div>
                 <div>
-                    <div id="receiptItems"></div>
-                    <button id="addItemButton" onclick="addItem()">Add Item</button>
+                    <div id="allItemsAndInputs">
+                        <div id="receiptItems"></div>
+                        <div id="addItemEntry">
+                            <p id="addItemDescriptionInput" contenteditable="true">Enter item here...</p>
+                            <p class="itemAmounts" id="addItemTotalInput" contenteditable="true"
+                                onblur="changeAmount('addItemTotalInput')"
+                                onfocus="savePreviousAmount('addItemTotalInput')">0.00</p>
+                            <img src="./img/add.png" onclick="addItemEntry()">
+                        </div>
+                    </div>
+                    <button id="editItemsButton" class="show" onclick="editItems()">Edit items</button>
+                    <button id="doneEditItemsButton" onclick="doneEditItems()">Done</button>
                 </div>
                 <div>
                     <h2>Subtotal</h2>
@@ -39,11 +49,13 @@
                 </div>
                 <div>
                     <h2>Tax</h2>
-                    <p id="tax" class="taxTipAmounts" contenteditable="true" oninput="updateSubtotalAndTotal()">0.00</p>
+                    <p id="tax" class="taxTipAmounts" contenteditable="true" onfocus="savePreviousAmount('tax')"
+                        onblur="changeAmount('tax')">0.00</p>
                 </div>
                 <div>
                     <h2>Tip</h2>
-                    <p id="tip" class="taxTipAmounts" contenteditable="true" oninput="updateSubtotalAndTotal()">0.00</p>
+                    <p id="tip" class="taxTipAmounts" contenteditable="true" onfocus="savePreviousAmount('tip')"
+                        onblur="changeAmount('tip')">0.00</p>
                 </div>
                 <div>
                     <h2>Check Total</h2>
