@@ -1,0 +1,11 @@
+#receiptUpload {
+    display: none;
+}
+
+#inputReceiptBlock, #editReceiptBlock, #splitReceiptDisplayBlock {
+    display: none;
+}
+
+#inputReceiptBlock.show, #editReceiptBlock.show, #splitReceiptDisplayBlock.show {
+    display: block;
+}

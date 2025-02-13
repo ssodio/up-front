@@ -1,4 +1,4 @@
-const { pairPeopleWithItems, calculateItemAmountOwed, calculateTotalAmountOwed, roundUpToNearestCent } = require('../calculation');
+const { pairPeopleWithItems, calculateItemAmountOwed, calculateTotalAmountOwed } = require('../src/calculation');
 
 const receipt = {
     vendorName: "Taco Bell",

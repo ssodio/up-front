@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add People</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <img src="./img/back.png" onclick="redirectToHome()">
+            <div>
+                <h2>Add people</h2>
+                <form id="addNameInput">
+                    <input type="text" id="newPerson" placeholder="Enter name">
+                    <img src="./img/add.png" onclick="addPerson()">
+                </form>
+                <div id="addedPeople"></div>
+            </div>
+        </div>
+        <button id="redirectToProcessReceiptButton" onclick="redirectToProcessReceipt()">NEXT</button>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
