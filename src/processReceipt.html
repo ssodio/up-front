@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Select</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="inputReceiptBlock" class="show">
+            <div>
+                <img src="./img/back.png" onclick="redirectToAddPeople()">
+                <div>
+                    <input type="file" id="receiptUpload" accept="image/*" onchange="uploadReceipt()">
+                    <button onclick="clickUpload()">SCAN</button>
+                    <button onclick="inputReceipt()">INPUT</button>
+                </div>
+            </div>
+        </div>
+        <div id="editReceiptBlock">
+            <div>
+                <img src="./img/back.png" onclick="showInputReceiptBlock()">
+                <h1 id="vendorName"></h1>
+                <div>
+                    <h2>Item</h2>
+                    <h2>$</h2>
+                    <h2>Ordered by</h2>
+                </div>
+                <div>
+                    <div id="receiptItems"></div>
+                    <button id="addItemButton" onclick="addItem()">Add Item</button>
+                </div>
+                <div>
+                    <h2>Subtotal</h2>
+                    <p id="subtotal">0.00</p>
+                </div>
+                <div>
+                    <h2>Tax</h2>
+                    <p id="tax" class="taxTipAmounts" contenteditable="true" oninput="updateSubtotalAndTotal()">0.00</p>
+                </div>
+                <div>
+                    <h2>Tip</h2>
+                    <p id="tip" class="taxTipAmounts" contenteditable="true" oninput="updateSubtotalAndTotal()">0.00</p>
+                </div>
+                <div>
+                    <h2>Check Total</h2>
+                    <p id="checkTotal">0.00</p>
+                </div>
+                <button id="calculateButton" onclick="splitTheBill()">$PLIT THE BILL</button>
+            </div>
+        </div>
+        <div id="splitReceiptDisplayBlock">
+            <div>
+                <img src="./img/back.png" onclick="showEditReceiptBlock()">
+                <h2>Here's your text</h2>
+                <div>
+                    <p id="splitReceiptText"></p>
+                    <img src="./img/copy.png">
+                </div>
+                <button id="startButton" onclick="redirectToHome()">$PLIT ANOTHER BILL</button>
+            </div>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>

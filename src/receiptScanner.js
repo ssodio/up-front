@@ -60,3 +60,5 @@ function parseData(data) {
 
     return receiptData;
 }
+
+module.exports = { processReceiptHandler };
