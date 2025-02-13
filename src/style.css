@@ -2,10 +2,10 @@
     display: none;
 }
 
-#inputReceiptBlock, #editReceiptBlock, #splitReceiptDisplayBlock {
+#inputReceiptBlock, #editReceiptBlock, #splitReceiptDisplayBlock, #addItemEntry, #editItemsButton, #doneEditItemsButton {
     display: none;
 }
 
-#inputReceiptBlock.show, #editReceiptBlock.show, #splitReceiptDisplayBlock.show {
+#inputReceiptBlock.show, #editReceiptBlock.show, #splitReceiptDisplayBlock.show, #addItemEntry.show, #editItemsButton.show, #doneEditItemsButton.show {
     display: block;
 }
