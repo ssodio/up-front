@@ -4,77 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Select</title>
+    <title>UpFront</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <div id="inputReceiptBlock" class="show">
-            <div>
-                <img src="./img/back.png" onclick="redirectToAddPeople()">
-                <div>
-                    <input type="file" id="receiptUpload" accept="image/*" onchange="uploadReceipt()">
-                    <button onclick="clickUpload()">SCAN</button>
-                    <button onclick="showEditReceiptBlock()">INPUT</button>
-                </div>
+    <div id="inputReceiptBlock" class="container show">
+        <div class="fillContainer">
+            <img src="./img/back.png" class="left back-button" onclick="redirectToAddPeople()">
+            <div class="center">
+                <input type="file" id="receiptUpload" accept="image/*" onchange="uploadReceipt()">
+                <button class="bottomButtons" onclick="clickUpload()">SCAN</button>
+                <button id="inputReceiptButton" class="bottomButtons" onclick="showEditReceiptBlock()">INPUT</button>
             </div>
         </div>
-        <div id="editReceiptBlock">
-            <div>
-                <img src="./img/back.png" onclick="showInputReceiptBlock()">
+    </div>
+    <div id="editReceiptBlock" class="container">
+        <div class="fillContainer">
+            <div class="left">
+                <img src="./img/back.png" class="back-button" onclick="showInputReceiptBlock()">
                 <h1 id="vendorName"></h1>
-                <div>
-                    <h2>Item</h2>
-                    <h2>$</h2>
-                    <h2>Ordered by</h2>
-                </div>
-                <div>
-                    <div id="allItemsAndInputs">
-                        <div id="receiptItems"></div>
-                        <div id="addItemEntry">
-                            <p id="addItemDescriptionInput" contenteditable="true">Enter item here...</p>
-                            <p class="itemAmounts" id="addItemTotalInput" contenteditable="true"
-                                onblur="changeAmount('addItemTotalInput')"
-                                onfocus="savePreviousAmount('addItemTotalInput')">0.00</p>
-                            <img src="./img/add.png" onclick="addItemEntry()">
-                        </div>
+            </div>
+            <div id="itemEntryTable">
+                <div class="itemEntryTableRow">
+                    <div id="descriptionTotalLabelContainer">
+                        <h2>Item</h2>
+                        <h2>$</h2>
                     </div>
-                    <button id="editItemsButton" class="show" onclick="editItems()">Edit items</button>
-                    <button id="doneEditItemsButton" onclick="doneEditItems()">Done</button>
+                    <h2 id="orderedByLabelContainer">Ordered by</h2>
                 </div>
-                <div>
-                    <h2>Subtotal</h2>
-                    <p id="subtotal">0.00</p>
+                <div id="receiptItems"></div>
+                <div id="addItemEntry" class="itemEntryTableRow">
+                    <div class="descriptionTotalInputContainer">
+                        <p id="addItemDescriptionInput" contenteditable="true">Enter item here...</p>
+                        <p class="itemAmounts" id="addItemTotalInput" contenteditable="true"
+                            onblur="changeAmount('addItemTotalInput')"
+                            onfocus="savePreviousAmount('addItemTotalInput')">
+                            0.00</p>
+                    </div>
+                    <div class="addRemoveItemButtonContainer">
+                        <img src="./img/add.png" class="add-item-button" onclick="addItemEntry()">
+                    </div>
                 </div>
-                <div>
-                    <h2>Tax</h2>
-                    <p id="tax" class="taxTipAmounts" contenteditable="true" onfocus="savePreviousAmount('tax')"
-                        onblur="changeAmount('tax')">0.00</p>
+                <div class="center-single">
+                    <button id="editItemsButton" class="editDoneEditItemsButtons show" onclick="editItems()">Edit
+                        items</button>
+                    <button id="doneEditItemsButton" class="editDoneEditItemsButtons" onclick="doneEditItems()">Apply
+                        edits</button>
                 </div>
-                <div>
-                    <h2>Tip</h2>
-                    <p id="tip" class="taxTipAmounts" contenteditable="true" onfocus="savePreviousAmount('tip')"
-                        onblur="changeAmount('tip')">0.00</p>
-                </div>
-                <div>
-                    <h2>Check Total</h2>
-                    <p id="checkTotal">0.00</p>
-                </div>
-                <button id="calculateButton" onclick="splitTheBill()">$PLIT THE BILL</button>
             </div>
-        </div>
-        <div id="splitReceiptDisplayBlock">
             <div>
-                <img src="./img/back.png" onclick="showEditReceiptBlock()">
-                <h2>Here's your text</h2>
-                <div>
-                    <p id="splitReceiptText"></p>
-                    <img src="./img/copy.png">
-                </div>
-                <button id="startButton" onclick="redirectToHome()">$PLIT ANOTHER BILL</button>
+                <h2>Subtotal</h2>
+                <p id="subtotal">0.00</p>
+            </div>
+            <div>
+                <h2>Tax</h2>
+                <p id="tax" class="taxTipAmounts" contenteditable="true" onfocus="savePreviousAmount('tax')"
+                    onblur="changeAmount('tax')">0.00</p>
+            </div>
+            <div>
+                <h2>Tip</h2>
+                <p id="tip" class="taxTipAmounts" contenteditable="true" onfocus="savePreviousAmount('tip')"
+                    onblur="changeAmount('tip')">0.00</p>
+            </div>
+            <div>
+                <h2>Check Total</h2>
+                <p id="checkTotal">0.00</p>
             </div>
         </div>
+        <button class="bottomButtons" id="calculateButton" onclick="splitTheBill()">$PLIT THE BILL</button>
+    </div>
+    <div id="splitReceiptDisplayBlock" class="container">
+        <div class="fillContainer">
+            <img src="./img/back.png" class="left back-button" onclick="showEditReceiptBlock()">
+            <h2>Here's your text</h2>
+            <div>
+                <p id="splitReceiptText"></p>
+                <img src="./img/copy.png">
+            </div>
+        </div>
+        <button class="bottomButtons" id="startButton" onclick="redirectToHome()">$PLIT ANOTHER BILL</button>
     </div>
     <script src="index.js"></script>
 </body>
