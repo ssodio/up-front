@@ -1,13 +1,459 @@
+/*  FONTS  */
+
+@font-face {
+    font-family: 'Kaolin';
+    src: url('./fonts/Kaolin.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'InriaSans-Bold';
+    src: url('./fonts/Inria_Sans/InriaSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'InriaSans-Regular';
+    src: url('./fonts/Inria_Sans/InriaSans-Regular.ttf') format('truetype');
+}
+
+/*  COLORS  */
+
+:root {
+    --lime: #C2D46F;
+    --lemon: #D4B76F;
+    --watermelon: #D46F6F;
+    --cucumber: #143706;
+    --lychee: #FFFDF8;
+    --pear: #FAF6ED;
+    --dropShadow: rgba(20, 55, 6, 0.1);
+    --limeTransparent: rgba(194, 212, 111, 0.6);
+    --lemonTransparent: rgba(212, 183, 111, 0.6);
+}
+
+/* CONTAINERS */
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    padding: 32px 36px 72px 32px;
+    box-sizing: border-box;
+    background-color: var(--pear);
+}
+
+#homeContainer {
+    background-image: url('./img/home-bg.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#inputReceiptBlock, #addPeopleContainer {
+    background-image: url('./img/input-bg.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#editReceiptBlock, #splitReceiptDisplayBlock {
+    background-image: url('./img/edit-bg.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#addPeopleTitleContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+#addPeopleContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+}
+
+#addedPeople {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+}
+
+.fillContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    gap: 2em;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8em;
+    flex: 1;
+    width: 100%;
+}
+
+#itemEntryTable {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+#receiptItems {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+
+.allItemsAndInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.itemEntryTableRow {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+}
+
+.descriptionTotalContainer {
+    display: flex;
+    flex: 0 0 60%;
+    max-width: 60%;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    background-color: var(--lychee);
+    padding: 12px 12px;
+    box-shadow: 0px 4px 4px var(--dropShadow);
+    box-sizing: border-box;
+}
+
+.descriptionTotalInputContainer {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    background-color: var(--lychee);
+    padding: 12px 12px;
+    box-shadow: 0px 4px 4px var(--dropShadow);
+    box-sizing: border-box;
+}
+
+.orderedByContainer {
+    display: flex;
+    flex: 40%;
+    max-width: 40%;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    background-color: var(--lychee);
+    padding: 12px 12px;
+    box-shadow: 0px 4px 4px var(--dropShadow);
+    box-sizing: border-box;
+}
+
+.addRemoveItemButtonContainer.show {
+    display: flex;
+    flex: 0 0 18px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: var(--lychee);
+    padding: 8px 8px;
+    box-shadow: 0px 4px 4px var(--dropShadow);
+    box-sizing: border-box;
+}
+
+.addRemoveItemButtonContainer {
+    display: none;
+}
+
+#descriptionTotalLabelContainer {
+    display: flex;
+    flex: 0 0 60%;
+    max-width: 60%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 12px 0px 0px;
+    box-sizing: border-box;
+}
+
+#orderedByLabelContainer {
+    display: flex;
+    flex: 40%;
+    max-width: 40%;
+    align-items: center;
+    padding: 0px 12px 0px 0px;
+    box-sizing: border-box;
+}
+
+/*  INPUTS  */
+
+.personEntryContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: var(--lychee);
+    padding: 16px 20px;
+    box-shadow: 0px 4px 4px var(--dropShadow);
+    box-sizing: border-box;
+}
+
+.allAddedPeople {
+    display: flex;
+    width: 100%;
+    font-family: 'InriaSans-Bold';
+    font-size: 12px;
+    text-align: left;
+    border: none;
+    color: var(--cucumber);
+    background-color: transparent;
+    flex: 1;
+}
+
+select {
+    padding: 0;
+    margin: 0;
+    height: auto;
+    min-height: auto;
+    line-height: normal;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: none;
+    scrollbar-width: none;
+    background-color: transparent;
+}
+
+select option {
+    margin: 0;
+    padding: 0;
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+select option:checked {
+    background-color: var(--lemonTransparent);
+}
+
+input[type="text"]:focus {
+    outline: none;
+}
+
+.itemAmounts {
+    max-width: 40%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.itemDescriptions {
+    max-width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taxTipAmounts {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#addItemDescriptionInput:focus {
+    outline: none;
+}
+
+.itemAmounts:focus {
+    outline: none;
+}
+
+.itemDescriptions:focus {
+    outline: none;
+}
+
+.taxTipAmounts:focus {
+    outline: none;
+}
+
+/*  TEXT  */
+
+h1 {
+    font-family: 'Kaolin';
+    color: var(--cucumber);
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+h2 {
+    font-family: 'Kaolin';
+    color: var(--cucumber);
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+h3 {
+    font-family: 'InriaSans-Regular';
+    color: var(--cucumber);
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+p {
+    font-family: 'InriaSans-Regular';
+    color: var(--cucumber);
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+input {
+    font-family: 'InriaSans-Regular';
+    color: var(--cucumber);
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+option {
+    font-family: 'InriaSans-Regular';
+    color: var(--cucumber);
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/*  BUTTONS  */
+
+.bottomButtons {
+    font-family: 'InriaSans-Bold';
+    border-radius: 32px;
+    background-color: var(--lime);
+    color: var(--cucumber);
+    border: none;
+    font-size: 12px;
+    min-width: 240px;
+    text-align: center;
+    padding: 20px 40px;
+    box-shadow: 0px 4px 4px var(--dropShadow);
+}
+
+#inputReceiptButton {
+    background-color: var(--lemon);
+}
+
+.editDoneEditItemsButtons {
+    font-family: 'InriaSans-Bold';
+    color: var(--cucumber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1.8px solid var(--cucumber);
+}
+
+.back-button {
+    width: 20px;
+    height: auto;
+}
+
+.add-button {
+    width: 20px;
+    height: auto;
+}
+
+.minus-button {
+    width: 20px;
+    height: auto;
+}
+
+.add-item-button {
+    width: 12px;
+    height: auto;
+}
+
+.minus-item-button {
+    width: 12px;
+    height: auto;
+}
+
+.carrot-button {
+    width: 10px;
+    height: auto;
+}
+
+.center-single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*  TOGGLES  */
+
 #receiptUpload {
     display: none;
 }
 
-#inputReceiptBlock, #editReceiptBlock, #splitReceiptDisplayBlock, #addItemEntry, #editItemsButton, #doneEditItemsButton {
+#inputReceiptBlock,
+#editReceiptBlock,
+#splitReceiptDisplayBlock,
+#addItemEntry,
+#editItemsButton,
+#doneEditItemsButton {
     display: none;
 }
 
-#inputReceiptBlock.show, #editReceiptBlock.show, #splitReceiptDisplayBlock.show, #addItemEntry.show, #editItemsButton.show, #doneEditItemsButton.show {
-    display: block;
+#inputReceiptBlock.show,
+#editReceiptBlock.show,
+#splitReceiptDisplayBlock.show,
+#addItemEntry.show,
+#editItemsButton.show,
+#doneEditItemsButton.show {
+    display: flex;
 }
 
-/* starting styles */
+.carrot-button {
+    transform: rotate(0deg);
+}
+
+.carrot-button.open {
+    transform: rotate(180deg);
+}

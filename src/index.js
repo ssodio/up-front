@@ -14,8 +14,9 @@ function redirectToAddPeople() {
 }
 
 function redirectToProcessReceipt() {
-    savePeople();
-    window.location.href = 'processReceipt.html';
+    if (savePeople()) {
+        window.location.href = 'processReceipt.html';
+    };
 }
 
 function showInputReceiptBlock() {
@@ -52,14 +53,15 @@ function showSplitReceiptDisplayBlock() {
 // ADD AND REMOVE PEOPLE //
 
 function addPerson() {
-    const newPerson = document.getElementById('newPerson').value;
+    const newPerson = document.getElementById('newPerson').value.trim().replace(/\s+/g, ' ');
 
     // no duplicate names allowed
     const currAllAddedPeople = getPeople();
-    if (currAllAddedPeople.includes(newPerson)) {
+    if (newPerson === "" || currAllAddedPeople.includes(newPerson)) {
         console.log('already added person with that name');
     } else {
         const newPersonEntry = document.createElement('div');
+        newPersonEntry.classList.add('personEntryContainer');
         newPersonEntry.id = 'personEntry-' + newPerson;
 
         const newPersonName = document.createElement('p');
@@ -67,6 +69,7 @@ function addPerson() {
         newPersonName.textContent = newPerson;
 
         const minus = document.createElement('img');
+        minus.classList.add('minus-button');
         minus.src = './img/minus.png';
         minus.onclick = function () {
             removePerson('personEntry-' + newPerson);
@@ -101,7 +104,12 @@ function getPeople() {
 function savePeople() {
     const peopleList = getPeople();
 
-    localStorage.setItem('peopleList', JSON.stringify(peopleList));
+    if (!peopleList || peopleList.length === 0) {
+        return false;
+    } else {
+        localStorage.setItem('peopleList', JSON.stringify(peopleList));
+        return true;
+    }
 }
 
 
@@ -112,7 +120,11 @@ function editItems() {
     const editItemsButton = document.getElementById('editItemsButton');
     const doneEditItemsButton = document.getElementById('doneEditItemsButton');
 
-    //also show the minus signs
+    const addRemoveItemButtons = document.getElementsByClassName('addRemoveItemButtonContainer');
+    for (let i = 0; i < addRemoveItemButtons.length; i++) {
+        addRemoveItemButtons[i].classList.add('show');
+    }
+
     addItemEntryContainer.classList.add('show');
     editItemsButton.classList.remove('show');
     doneEditItemsButton.classList.add('show');
@@ -123,7 +135,11 @@ function doneEditItems() {
     const editItemsButton = document.getElementById('editItemsButton');
     const doneEditItemsButton = document.getElementById('doneEditItemsButton');
 
-    //also remove minus signs
+    const addRemoveItemButtons = document.getElementsByClassName('addRemoveItemButtonContainer');
+    for (let i = 0; i < addRemoveItemButtons.length; i++) {
+        addRemoveItemButtons[i].classList.remove('show');
+    }
+
     addItemEntryContainer.classList.remove('show');
     editItemsButton.classList.add('show');
     doneEditItemsButton.classList.remove('show');
@@ -145,7 +161,11 @@ function addItem(index, itemDescription, itemTotal) {
     const people = JSON.parse(savedPeopleList);
 
     const newItemEntry = document.createElement('div');
+    newItemEntry.classList.add('itemEntryTableRow');
     newItemEntry.id = index;
+
+    const newItemEntryDescriptionTotal = document.createElement('div');
+    newItemEntryDescriptionTotal.classList.add('descriptionTotalContainer');
 
     const newItemDescription = document.createElement('p');
     newItemDescription.classList.add('itemDescriptions');
@@ -164,9 +184,29 @@ function addItem(index, itemDescription, itemTotal) {
         savePreviousAmount("itemTotal-" + index);
     }
 
+    newItemEntryDescriptionTotal.appendChild(newItemDescription);
+    newItemEntryDescriptionTotal.appendChild(newItemTotal);
+
+    const newItemEntryOrderedByDropdown = document.createElement('div');
+    newItemEntryOrderedByDropdown.classList.add('orderedByContainer');
+
+    const newOrderedByDisplayNames = document.createElement('p');
+    newOrderedByDisplayNames.id = 'itemOrderedByDisplayNames-' + index;
+    newOrderedByDisplayNames.classList.add('itemOrderedByDisplayNames');
+    newOrderedByDisplayNames.innerText = "All";
+
     const newOrderedByDropdown = document.createElement('select');
     newOrderedByDropdown.classList.add('itemOrderedBys');
+    newOrderedByDropdown.id = 'itemOrderedBy-' + index;
     newOrderedByDropdown.multiple = true;
+    if (people.length > 2) {
+        newOrderedByDropdown.setAttribute('size', 3);
+    } else {
+        newOrderedByDropdown.setAttribute('size', people.length);
+    }
+    
+    newOrderedByDropdown.style.display = 'none';
+
     people.forEach(person => {
         const option = document.createElement('option');
         option.value = person.toLowerCase().replace(" ", "_");
@@ -174,17 +214,44 @@ function addItem(index, itemDescription, itemTotal) {
         newOrderedByDropdown.appendChild(option);
     })
 
+    newOrderedByDropdown.onchange = function () {
+        changeOrderedByDisplayNames('itemOrderedBy-' + index, 'itemOrderedByDisplayNames-' + index);
+    }
+
+    const newDropdownCarrot = document.createElement('img');
+    newDropdownCarrot.src = './img/carrot.png';
+    newDropdownCarrot.classList.add('carrot-button');
+    newDropdownCarrot.onclick = function () {
+        newOrderedByDropdown.style.display = newOrderedByDropdown.style.display === 'none' ? 'flex' : 'none';
+        newOrderedByDisplayNames.style.display = newOrderedByDropdown.style.display === 'none' ? 'flex' : 'none';
+
+        if (newOrderedByDropdown.style.display === 'none') {
+            newDropdownCarrot.classList.remove('open');
+        } else {
+            newDropdownCarrot.classList.add('open');
+        }
+    }
+
+    newItemEntryOrderedByDropdown.appendChild(newOrderedByDisplayNames);
+    newItemEntryOrderedByDropdown.appendChild(newOrderedByDropdown);
+    newItemEntryOrderedByDropdown.appendChild(newDropdownCarrot);
+
+    const newItemEntryAddRemoveItemButtonContainer = document.createElement('div');
+    newItemEntryAddRemoveItemButtonContainer.classList.add('addRemoveItemButtonContainer');
+
     const newRemoveItemButton = document.createElement('img');
     newRemoveItemButton.src = './img/minus.png';
+    newRemoveItemButton.classList.add('minus-item-button');
     newRemoveItemButton.id = 'itemRemoveButton-' + index;
     newRemoveItemButton.onclick = function () {
         removeItem(index);
     }
 
-    newItemEntry.appendChild(newItemDescription);
-    newItemEntry.appendChild(newItemTotal);
-    newItemEntry.appendChild(newOrderedByDropdown);
-    newItemEntry.appendChild(newRemoveItemButton);
+    newItemEntryAddRemoveItemButtonContainer.appendChild(newRemoveItemButton);
+
+    newItemEntry.appendChild(newItemEntryDescriptionTotal);
+    newItemEntry.appendChild(newItemEntryOrderedByDropdown);
+    newItemEntry.appendChild(newItemEntryAddRemoveItemButtonContainer);
 
     document.getElementById('receiptItems').appendChild(newItemEntry);
 
@@ -196,6 +263,20 @@ function removeItem(itemId) {
     document.getElementById('receiptItems').removeChild(itemToRemove);
 
     updateSubtotalAndTotal();
+}
+
+function changeOrderedByDisplayNames(itemOrderedById, itemOrderedByDisplayNamesId) {
+    let orderedByDropdown = document.getElementById(itemOrderedById);
+    let orderedByList = getOrderedByList(orderedByDropdown);
+
+    let displayNamesText = "";
+
+    orderedByList.forEach(name => {
+        displayNamesText = displayNamesText + name + "\n";
+    })
+
+    let orderedByDisplayNames = document.getElementById(itemOrderedByDisplayNamesId);
+    orderedByDisplayNames.innerText = displayNamesText;
 }
 
 function createNewItemIndex() {
@@ -370,6 +451,11 @@ function processConfirmedReceipt() {
 function getOrderedByList(orderedByDropdown) {
     const orderedByList = Array.from(orderedByDropdown.selectedOptions).map(option => option.text);
 
+    if (!orderedByList || orderedByList.length === 0) {
+        const savedPeopleList = localStorage.getItem('peopleList');
+        const people = JSON.parse(savedPeopleList);
+        return people;
+    }
     return orderedByList;
 }
 
